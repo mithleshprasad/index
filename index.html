@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MongoDB Compass</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsoneditor/9.10.2/jsoneditor.min.css">
+    <link rel ="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h3>Databases</h3>
+                <div class="sidebar-actions">
+                    <button id="refresh-databases" title="Refresh"><i class="fas fa-sync-alt"></i></button>
+                    <button id="create-database" title="Create Database"><i class="fas fa-plus"></i></button>
+                </div>
+            </div>
+            
+            <div class="connection-form">
+                <input type="text" id="connection-string" placeholder="mongodb://localhost:27017">
+                <button id="connect-button"><i class="fas fa-plug"></i> Connect</button>
+            </div>
+            
+            <ul class="database-list" id="database-list">
+                <!-- Databases will be listed here -->
+            </ul>
+        </div>
+        
+        <div class="main-content">
+            <div class="tab-bar">
+                <div class="tab active" data-tab="documents">Documents</div>
+                <div class="tab" data-tab="schema">Schema</div>
+                <div class="tab" data-tab="indexes">Indexes</div>
+                <div class="tab" data-tab="explain">Explain</div>
+                <div class="tab" data-tab="stats">Stats</div>
+            </div>
+            
+            <div class="query-bar">
+                <select id="query-limit">
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                    <option value="0">All</option>
+                </select>
+                
+                <select id="query-sort">
+                    <option value="">No Sort</option>
+                    <option value="1">Sort Asc</option>
+                    <option value="-1">Sort Desc</option>
+                </select>
+                
+                <select id="query-sort-field">
+                    <option value="_id">_id</option>
+                    <option value="name">name</option>
+                    <option value="createdAt">createdAt</option>
+                </select>
+                
+                <input type="text" id="query-input" placeholder='{"field": "value"}' style="flex: 1;">
+                
+                <button id="execute-query"><i class="fas fa-search"></i> Find</button>
+                <button id="query-builder-toggle"><i class="fas fa-sliders-h"></i></button>
+            </div>
+            
+            <div id="query-builder" style="display: none; padding: 15px; background-color: var(--query-builder-bg);">
+                <div style="display: flex; margin-bottom: 10px;">
+                    <div style="flex: 1; margin-right: 10px;">
+                        <label>Filter</label>
+                        <div id="filter-builder" style="height: 150px;"></div>
+                    </div>
+                    <div style="flex: 1;">
+                        <label>Projection</label>
+                        <div id="projection-builder" style="height: 150px;"></div>
+                    </div>
+                </div>
+                <button id="apply-query-builder">Apply Query</button>
+            </div>
+            
+            <div class="toolbar">
+                <button id="insert-document"><i class="fas fa-plus"></i> Insert Document</button>
+                <button id="update-document"><i class="fas fa-edit"></i> Update</button>
+                <button id="delete-document"><i class="fas fa-trash"></i> Delete</button>
+                <button id="export-documents"><i class="fas fa-file-export"></i> Export</button>
+                <button id="import-documents"><i class="fas fa-file-import"></i> Import</button>
+            </div>
+            
+            <div class="content-area">
+                <div class="tab-content active" id="documents-tab">
+                    <div class="document-view" id="document-view">
+                        Connect to a MongoDB server and select a collection to view documents.
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="schema-tab">
+                    <h3>Schema Analysis</h3>
+                    <div id="schema-analysis" style="height: 400px; border: 1px solid var(--border-color); padding: 15px;">
+                        Schema analysis will be displayed here.
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="indexes-tab">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <h3>Indexes</h3>
+                        <button id="create-index"><i class="fas fa-plus"></i> Create Index</button>
+                    </div>
+                    <div id="indexes-list" style="height: 400px; overflow-y: auto;">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <thead>
+                                <tr style="background-color: var(--query-builder-bg);">
+                                    <th style="padding: 10px; text-align: left;">Name</th>
+                                    <th style="padding: 10px; text-align: left;">Fields</th>
+                                    <th style="padding: 10px; text-align: left;">Type</th>
+                                    <th style="padding: 10px; text-align: left;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="indexes-table-body">
+                                <!-- Indexes will be listed here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="explain-tab">
+                    <h3>Query Explanation</h3>
+                    <div id="explain-view" style="height: 400px; border: 1px solid var(--border-color); padding: 15px;">
+                        Execute a query to see the explanation.
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="stats-tab">
+                    <h3>Collection Statistics</h3>
+                    <div class="stats-container">
+                        <div class="stat-card">
+                            <h3>Documents</h3>
+                            <div class="stat-value" id="stat-count">-</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Storage Size</h3>
+                            <div class="stat-value" id="stat-storage">-</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Index Size</h3>
+                            <div class="stat-value" id="stat-index-size">-</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Avg Doc Size</h3>
+                            <div class="stat-value" id="stat-avg-size">-</div>
+                        </div>
+                    </div>
+                    
+                    <h3 style="margin-top: 20px;">Index Usage</h3>
+                    <div id="index-usage-chart" style="height: 300px; border: 1px solid var(--border-color); padding: 15px;">
+                        Chart will be displayed here.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="pagination">
+                <button id="prev-page"><i class="fas fa-chevron-left"></i> Previous</button>
+                <span id="page-info">Page 1 of 1</span>
+                <button id="next-page">Next <i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="status-bar">
+        <span id="connection-status">Not connected</span>
+        <div>
+            <button class="theme-toggle" id="theme-toggle"><i class="fas fa-moon"></i></button>
+        </div>
+    </div>
+    
+    <!-- Modals -->
+    <div class="modal" id="document-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Edit Document</h3>
+                <button id="close-modal">&times;</button>
+            </div>
+            <div id="json-editor" style="height: 400px;"></div>
+            <div class="modal-footer">
+                <button id="cancel-modal">Cancel</button>
+                <button id="save-modal" style="background-color: var(--primary-color); color: white;">Save</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal" id="index-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create Index</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div style="margin-bottom: 15px;">
+                <label>Index Name</label>
+                <input type="text" id="index-name" style="width: 100%;">
+            </div>
+            <div style="margin-bottom: 15px;">
+                <label>Fields</label>
+                <div id="index-fields" style="height: 200px;"></div>
+            </div>
+            <div style="margin-bottom: 15px;">
+                <label>Options</label>
+                <div id="index-options" style="height: 150px;"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="cancel-modal">Cancel</button>
+                <button id="create-index-btn" style="background-color: var(--primary-color); color: white;">Create Index</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsoneditor/9.10.2/jsoneditor.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

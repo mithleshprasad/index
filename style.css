@@ -1,0 +1,332 @@
+:root {
+            --primary-color: #13AA52;
+            --sidebar-bg: #2d3e4f;
+            --main-bg: #ffffff;
+            --text-color: #333333;
+            --border-color: #e0e0e0;
+            --hover-color: #f5f5f5;
+            --active-color: #e3f2fd;
+            --status-bar-bg: #2d3e4f;
+            --status-bar-text: #ffffff;
+            --query-builder-bg: #f5f5f5;
+            --document-bg: #ffffff;
+        }
+
+        .dark-mode {
+            --primary-color: #13AA52;
+            --sidebar-bg: #1a1a1a;
+            --main-bg: #2d2d2d;
+            --text-color: #e0e0e0;
+            --border-color: #444444;
+            --hover-color: #3a3a3a;
+            --active-color: #1e3a5f;
+            --status-bar-bg: #1a1a1a;
+            --status-bar-text: #e0e0e0;
+            --query-builder-bg: #333333;
+            --document-bg: #252525;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--main-bg);
+            color: var(--text-color);
+        }
+        
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+        
+        .sidebar {
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            color: white;
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .content-area {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .connection-form {
+            padding: 15px;
+            background-color: rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+        }
+        
+        .connection-form input, .connection-form select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 4px;
+            background-color: rgba(255,255,255,0.1);
+            color: white;
+        }
+        
+        .connection-form button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+        
+        .database-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            overflow-y: auto;
+            flex: 1;
+        }
+        
+        .database-item {
+            padding: 10px 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .database-item:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+        
+        .database-item i {
+            margin-right: 10px;
+        }
+        
+        .collection-list {
+            list-style: none;
+            padding-left: 30px;
+            margin: 5px 0;
+        }
+        
+        .collection-item {
+            padding: 8px 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .collection-item:hover {
+            color: var(--primary-color);
+        }
+        
+        .collection-item i {
+            margin-right: 8px;
+            font-size: 12px;
+        }
+        
+        .query-bar {
+            background-color: var(--query-builder-bg);
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .query-bar input, .query-bar select {
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            margin-right: 10px;
+            background-color: var(--main-bg);
+            color: var(--text-color);
+        }
+        
+        .query-bar button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        
+        .document-view {
+            background-color: var(--document-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 15px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            height: calc(100% - 60px);
+            overflow-y: auto;
+            margin-top: 15px;
+        }
+        
+        .status-bar {
+            background-color: var(--status-bar-bg);
+            color: var(--status-bar-text);
+            padding: 8px 20px;
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .tab-bar {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 15px;
+        }
+        
+        .tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+        
+        .tab.active {
+            border-bottom: 2px solid var(--primary-color);
+            font-weight: bold;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .toolbar {
+            display: flex;
+            padding: 10px 15px;
+            background-color: var(--query-builder-bg);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .toolbar button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            margin-right: 10px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            background-color: var(--query-builder-bg);
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .jsoneditor {
+            border: 1px solid var(--border-color);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: var(--main-bg);
+            padding: 20px;
+            border-radius: 5px;
+            width: 600px;
+            max-width: 90%;
+            max-height: 90%;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 15px;
+        }
+        
+        .modal-footer button {
+            margin-left: 10px;
+        }
+        
+        .stats-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .stat-card {
+            flex: 1;
+            min-width: 200px;
+            background-color: var(--query-builder-bg);
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .stat-card h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: var(--primary-color);
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            margin-left: 15px;
+        }
+        
+        .sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px 15px 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .sidebar-actions button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+    
